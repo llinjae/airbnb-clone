@@ -9,7 +9,7 @@ interface MenuItemProps {
   label: string;
 }
 
-const MenuItem = ({ onClick, label }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ onClick, label }) => {
   return (
     <div onClick={onClick} css={[MenuBox]}>
       {label}

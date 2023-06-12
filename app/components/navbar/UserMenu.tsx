@@ -8,8 +8,10 @@ import MenuItem from './MenuItem';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useCallback, useState } from 'react';
 import { css } from '@emotion/react';
+import useRegisterModal from '@/app/hooks/useRegisterModal';
 
 const UserMenu = () => {
+  const registerModal = useRegisterModal();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -34,7 +36,7 @@ const UserMenu = () => {
         <div css={[MenuItemBox]}>
           <div css={[Item]}>
             <>
-              <MenuItem onClick={() => {}} label='회원가입' />
+              <MenuItem onClick={registerModal.onOpen} label='회원가입' />
               <MenuItem onClick={() => {}} label='로그인' />
             </>
           </div>
