@@ -38,7 +38,7 @@ const RegisterModal = () => {
         registerModal.onClose();
       })
       .catch((error) => {
-        toast.error('Something went wrong!');
+        toast.error('다시 입력해주세요.');
       })
       .finally(() => {
         setIsLoading(false);
@@ -47,7 +47,7 @@ const RegisterModal = () => {
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
-      <Heading title='Welcome to Airbnb' subtitle='Create an account!' />
+      <Heading title='에어비앤비에 오신 것을 환영합니다.' subtitle='계정 생성' />
       <Input
         id='email'
         label='Email'
@@ -58,7 +58,7 @@ const RegisterModal = () => {
       />
       <Input
         id='name'
-        label='Name'
+        label='이름'
         disabled={isLoading}
         register={register}
         errors={errors}
@@ -66,7 +66,7 @@ const RegisterModal = () => {
       />
       <Input
         id='password'
-        label='Password'
+        label='비밀번호'
         type='password'
         disabled={isLoading}
         register={register}
@@ -81,13 +81,13 @@ const RegisterModal = () => {
       <hr />
       <Button
         outline
-        label='Continue with Google'
+        label='구글로 로그인하기'
         icon={FcGoogle}
         onClick={() => {}}
       />
       <Button
         outline
-        label='Continue with Github'
+        label='깃허브로 로그인하기'
         icon={AiFillGithub}
         onClick={() => {}}
       />
@@ -100,12 +100,12 @@ const RegisterModal = () => {
         '
       >
         <div className='justify-center flex flex-row items-center gap-2'>
-          <div>Already have an account?</div>
+          <div>이미 계정이 있으신가요?</div>
           <div
             onClick={registerModal.onClose}
             className='text-neutral-800 cursor-pointer hover:underline'
           >
-            Log in
+            로그인
           </div>
         </div>
       </div>
@@ -116,8 +116,8 @@ const RegisterModal = () => {
     <Modal
       disabled={isLoading}
       isOpen={registerModal.isOpen}
-      title='Register'
-      actionLabel='Continue'
+      title='로그인 또는 회원 가입'
+      actionLabel='계속'
       onClose={registerModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
