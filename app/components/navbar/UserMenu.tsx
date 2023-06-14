@@ -5,7 +5,7 @@
 import { css } from '@emotion/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useCallback, useState } from 'react';
-import { User } from '@prisma/client';
+import { SafeUser } from '@/app/types';
 import { signOut } from 'next-auth/react';
 
 import Avatar from '../Avatar';
@@ -14,7 +14,7 @@ import useRegisterModal from '@/app/hooks/useRegisterModal';
 import useLoginModal from '@/app/hooks/useLoginModal';
 
 interface UserMenuProps {
-  currentUser: User | null;
+  currentUser?: SafeUser | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
@@ -35,7 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         <div onClick={toggleOpen} css={[IconBox]}>
           <AiOutlineMenu />
           <div css={[AvatarIcon]}>
-            <Avatar />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>

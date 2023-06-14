@@ -4,13 +4,14 @@ import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { signIn } from 'next-auth/react';
 
 import axios from 'axios';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
-import { toast } from 'react-hot-toast';
 import Button from '../Button';
 
 const RegisterModal = () => {
@@ -33,6 +34,10 @@ const RegisterModal = () => {
     setIsLoading(true);
 
     axios
+      // axios.post 함수를 사용하여 /api/register 엔드포인트로 데이터를 전송
+      // then 메서드를 사용하여 POST 요청이 성공했을 때 registerModal.onClose()를 호출하여 회원가입 모달을 닫는다.
+      // catch 메서드를 사용하여 POST 요청이 실패했을 때 toast.error를 사용하여 오류 메시지를 표시
+      // finally 메서드를 사용하여 요청이 성공하거나 실패한 후에 setIsLoading(false)를 호출하여 로딩 상태를 비활성화
       .post('/api/register', data)
       .then(() => {
         registerModal.onClose();
@@ -86,13 +91,13 @@ const RegisterModal = () => {
         outline
         label='구글로 로그인하기'
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label='깃허브로 로그인하기'
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div
         className='

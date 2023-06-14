@@ -85,13 +85,13 @@ const LoginModal = () => {
         outline
         label='구글로 로그인하기'
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label='깃허브로 로그인하기'
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div
         className='
