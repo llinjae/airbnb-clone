@@ -2,14 +2,19 @@
 
 'use client';
 
+import { User } from '@prisma/client';
+import { css } from '@emotion/react';
+
 import Container from '../Container';
 import Logo from './Logo';
 import Search from './Search';
 import UserMenu from './UserMenu';
 
-import { css } from '@emotion/react';
+interface NavbarProps {
+  currentUser?: User | null;
+}
 
-const Navbar = () => {
+const Navbar: React.FC<NavbarProps> = ({currentUser}) => {
   return (
     <div css={[NavbarContainer]}>
       <div css={[NavbarContentContainer]}>
@@ -17,7 +22,7 @@ const Navbar = () => {
           <div css={[NavbarContent]}>
             <Logo />
             <Search />
-            <UserMenu />
+            <UserMenu currentUser={currentUser} />
           </div>
         </Container>
       </div>

@@ -2,16 +2,24 @@
 
 'use client';
 
-import Avatar from '../Avatar';
-import MenuItem from './MenuItem';
-
+import { css } from '@emotion/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useCallback, useState } from 'react';
-import { css } from '@emotion/react';
-import useRegisterModal from '@/app/hooks/useRegisterModal';
+import { User } from '@prisma/client';
+import { signOut } from 'next-auth/react';
 
-const UserMenu = () => {
+import Avatar from '../Avatar';
+import MenuItem from './MenuItem';
+import useRegisterModal from '@/app/hooks/useRegisterModal';
+import useLoginModal from '@/app/hooks/useLoginModal';
+
+interface UserMenuProps {
+  currentUser: User | null;
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -35,10 +43,25 @@ const UserMenu = () => {
       {isOpen && (
         <div css={[MenuItemBox]}>
           <div css={[Item]}>
-            <>
-              <MenuItem onClick={registerModal.onOpen} label='회원가입' />
-              <MenuItem onClick={() => {}} label='로그인' />
-            </>
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {}} label='여행' />
+                <MenuItem onClick={() => {}} label='위시리스트' />
+                <MenuItem onClick={() => {}} label='예약 목록' />
+                <MenuItem
+                  onClick={() => {}}
+                  label='당신의 공간을 에어비앤비하세요'
+                />
+                <MenuItem onClick={() => {}} label='계정' />
+                <hr />
+                <MenuItem onClick={() => signOut()} label='로그아웃' />
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={registerModal.onOpen} label='회원가입' />
+                <MenuItem onClick={loginModal.onOpen} label='로그인' />
+              </>
+            )}
           </div>
         </div>
       )}

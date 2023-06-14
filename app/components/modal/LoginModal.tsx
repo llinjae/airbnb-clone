@@ -1,20 +1,25 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 import axios from 'axios';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
-import { toast } from 'react-hot-toast';
 import Button from '../Button';
+import useLoginModal from '@/app/hooks/useLoginModal';
 
-const RegisterModal = () => {
+const LoginModal = () => {
+  const router = useRouter();
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -23,7 +28,6 @@ const RegisterModal = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
       email: '',
       password: '',
     },
@@ -32,25 +36,27 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    axios
-      .post('/api/register', data)
-      .then(() => {
-        registerModal.onClose();
-      })
-      .catch((error) => {
-        toast.error('다시 입력해주세요.');
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    }).then((callback) => {
+      setIsLoading(false);
+
+      if (callback?.ok) {
+        toast.success('로그인 성공');
+        router.refresh();
+        loginModal.onClose();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    });
   };
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
-      <Heading
-        title='에어비앤비에 오신 것을 환영합니다.'
-        subtitle='계정 생성'
-      />
+      <Heading title='다시 오신 것을 환영합니다.' subtitle='계정에 로그인' />
       <Input
         id='email'
         label='Email'
@@ -59,14 +65,7 @@ const RegisterModal = () => {
         errors={errors}
         required
       />
-      <Input
-        id='name'
-        label='이름'
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
+
       <Input
         id='password'
         label='비밀번호'
@@ -118,10 +117,10 @@ const RegisterModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title='회원 가입'
+      isOpen={loginModal.isOpen}
+      title='로그인'
       actionLabel='계속'
-      onClose={registerModal.onClose}
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -129,4 +128,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default LoginModal;
