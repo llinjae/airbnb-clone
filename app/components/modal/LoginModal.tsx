@@ -8,7 +8,6 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-import axios from 'axios';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import Modal from './Modal';
 import Heading from '../Heading';
@@ -18,8 +17,10 @@ import useLoginModal from '@/app/hooks/useLoginModal';
 
 const LoginModal = () => {
   const router = useRouter();
+
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -53,6 +54,11 @@ const LoginModal = () => {
       }
     });
   };
+
+  const toggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
@@ -102,12 +108,12 @@ const LoginModal = () => {
         '
       >
         <div className='justify-center flex flex-row items-center gap-2'>
-          <div>이미 계정이 있으신가요?</div>
+          <div>에어비앤비가 처음이신가요?</div>
           <div
-            onClick={registerModal.onClose}
+            onClick={toggle}
             className='text-neutral-800 cursor-pointer hover:underline'
           >
-            로그인
+            회원가입
           </div>
         </div>
       </div>
