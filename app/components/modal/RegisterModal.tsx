@@ -118,7 +118,7 @@ const RegisterModal = () => {
         <div className='justify-center flex flex-row items-center gap-2'>
           <div>이미 계정이 있으신가요?</div>
           <div
-            onClick={registerModal.onClose}
+            onClick={toggle}
             className='text-neutral-800 cursor-pointer hover:underline'
           >
             로그인

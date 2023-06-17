@@ -12,6 +12,7 @@ import Avatar from '../Avatar';
 import MenuItem from './MenuItem';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import useLoginModal from '@/app/hooks/useLoginModal';
+import useRentModal from '@/app/hooks/useRentModal';
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
@@ -20,16 +21,26 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const rentModal = useRentModal();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
 
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    rentModal.onOpen();
+  }, [currentUser, loginModal, rentModal])
+
   return (
     <div css={[UserContainer]}>
       <div css={[UserBox]}>
-        <div onClick={() => {}} css={[Text]}>
+        <div onClick={onRent} css={[Text]}>
           당신의 공간을 에어비앤비하세요
         </div>
         <div onClick={toggleOpen} css={[IconBox]}>
@@ -49,7 +60,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 <MenuItem onClick={() => {}} label='위시리스트' />
                 <MenuItem onClick={() => {}} label='예약 목록' />
                 <MenuItem
-                  onClick={() => {}}
+                  onClick={rentModal.onOpen}
                   label='당신의 공간을 에어비앤비하세요'
                 />
                 <MenuItem onClick={() => {}} label='계정' />
