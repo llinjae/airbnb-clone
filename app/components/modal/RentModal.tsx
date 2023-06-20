@@ -9,7 +9,6 @@ import { categories } from '../navbar/Categories';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 
-import useRentModal from '@/app/hooks/useRentModal';
 import Modal from './Modal';
 import Heading from '../Heading';
 import CategoryInput from '../inputs/CategoryInput';
@@ -17,6 +16,7 @@ import CountrySelect from '../inputs/CountrySelect';
 import Counter from '../inputs/Counter';
 import ImageUpload from '../inputs/ImageUpload';
 import Input from '../inputs/Input';
+import useRentModal from '@/app/hooks/useRentModal';
 
 enum STEPS {
   CATEGORY = 0,
