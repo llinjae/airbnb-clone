@@ -1,24 +1,26 @@
 /** @jsxImportSource @emotion/react */
 
-'use client';
+"use client";
 
-import { css } from '@emotion/react';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { useCallback, useState } from 'react';
-import { SafeUser } from '@/app/types';
-import { signOut } from 'next-auth/react';
+import { css } from "@emotion/react";
+import { useRouter } from "next/navigation";
+import { AiOutlineMenu } from "react-icons/ai";
+import { useCallback, useState } from "react";
+import { SafeUser } from "@/app/types";
+import { signOut } from "next-auth/react";
 
-import Avatar from '../Avatar';
-import MenuItem from './MenuItem';
-import useRegisterModal from '@/app/hooks/useRegisterModal';
-import useLoginModal from '@/app/hooks/useLoginModal';
-import useRentModal from '@/app/hooks/useRentModal';
+import Avatar from "../Avatar";
+import MenuItem from "./MenuItem";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
+import useRentModal from "@/app/hooks/useRentModal";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+  const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentModal = useRentModal();
@@ -35,7 +37,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     }
 
     rentModal.onOpen();
-  }, [currentUser, loginModal, rentModal])
+  }, [currentUser, loginModal, rentModal]);
 
   return (
     <div css={[UserContainer]}>
@@ -56,21 +58,21 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           <div css={[Item]}>
             {currentUser ? (
               <>
-                <MenuItem onClick={() => {}} label='여행' />
-                <MenuItem onClick={() => {}} label='위시리스트' />
-                <MenuItem onClick={() => {}} label='예약 목록' />
+                <MenuItem onClick={() => router.push("/trips")} label="여행" />
+                <MenuItem onClick={() => {}} label="위시리스트" />
+                <MenuItem onClick={() => {}} label="예약 목록" />
                 <MenuItem
                   onClick={rentModal.onOpen}
-                  label='당신의 공간을 에어비앤비하세요'
+                  label="당신의 공간을 에어비앤비하세요"
                 />
-                <MenuItem onClick={() => {}} label='계정' />
+                <MenuItem onClick={() => {}} label="계정" />
                 <hr />
-                <MenuItem onClick={() => signOut()} label='로그아웃' />
+                <MenuItem onClick={() => signOut()} label="로그아웃" />
               </>
             ) : (
               <>
-                <MenuItem onClick={registerModal.onOpen} label='회원가입' />
-                <MenuItem onClick={loginModal.onOpen} label='로그인' />
+                <MenuItem onClick={registerModal.onOpen} label="회원가입" />
+                <MenuItem onClick={loginModal.onOpen} label="로그인" />
               </>
             )}
           </div>

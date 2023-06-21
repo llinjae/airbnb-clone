@@ -2,20 +2,19 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Reservation } from "@prisma/client";
 import { Range } from "react-date-range";
 import { toast } from "react-hot-toast";
 // differenceInDays 랑 differenceInCalendarDays 차이 알기
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 
 import { categories } from "@/app/components/navbar/Categories";
-import { SafeListing, SafeUser } from "@/app/types";
+import { SafeListing, SafeUser, SafeReservation } from "@/app/types";
 
+import axios from "axios";
 import Container from "@/app/components/Container";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import axios from "axios";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 
 const initialDateRange = {
@@ -25,7 +24,7 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  reservations?: Reservation[];
+  reservations?: SafeReservation[];
   listing: SafeListing & {
     user: SafeUser;
   };
@@ -76,7 +75,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .then(() => {
         toast.success("예약됨!");
         setDateRange(initialDateRange);
-        router.refresh();
+        router.push('/trips');
       })
       .catch(() => {
         toast.error("무언가 잘못됨.");
