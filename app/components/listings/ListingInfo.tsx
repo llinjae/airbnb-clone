@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import useCountries from '@/app/hooks/useCountries';
-import { SafeUser } from '@/app/types';
-import { IconType } from 'react-icons';
-import Avatar from '../Avatar';
-import ListingCategory from './ListingCategory';
-import dynamic from 'next/dynamic';
+import useCountries from "@/app/hooks/useCountries";
+import { SafeUser } from "@/app/types";
+import { IconType } from "react-icons";
+import Avatar from "../Avatar";
+import ListingCategory from "./ListingCategory";
+import dynamic from "next/dynamic";
 
-const Map = dynamic()
+const Map = dynamic(() => import("../Map"), {
+  ssr: false,
+});
 
 interface ListingInfoProps {
   user: SafeUser;
@@ -39,13 +41,13 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   const coordinates = getByValue(locationValue)?.latlng;
 
   return (
-    <div className='col-span-4 flex flex-col gap-8'>
-      <div className='flex flex-col gap-2'>
-        <div className='text-xl font-semibold flex flex-row items-center gap-2'>
+    <div className="col-span-4 flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <div className="text-xl font-semibold flex flex-row items-center gap-2">
           <div>호스트 {user?.name}</div>
           <Avatar src={user?.image} />
         </div>
-        <div className='flex flex-row items-center gap-4 font-light text-neutral-500'>
+        <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
           <div>{guestCount} 명</div>
           <div>방 {roomCount} 개</div>
           <div>화장실 {bathroomCount} 개</div>
@@ -60,10 +62,9 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
         />
       )}
       <hr />
-      <div className='text-lg font-light text-neutral-500'>
-        {description}
-      </div>
+      <div className="text-lg font-light text-neutral-500">{description}</div>
       <hr />
+      <Map center={coordinates} />
     </div>
   );
 };
