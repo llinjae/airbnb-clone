@@ -1,13 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-'use client';
+"use client";
 
-import { css } from '@emotion/react';
-import { BiSearch } from 'react-icons/bi';
+import useSearchModal from "@/app/hooks/useSearchModal";
+import { css } from "@emotion/react";
+import { BiSearch } from "react-icons/bi";
 
 const Search = () => {
+  const searchModal = useSearchModal();
+
   return (
-    <div css={[SearchBox]}>
+    <div onClick={searchModal.onOpen} css={[SearchBox]}>
       <div css={[SearchContentBox]}>
         <div css={[Anywhere]}>어디든지</div>
         <div css={[AnyWeek]}>언제든지</div>
