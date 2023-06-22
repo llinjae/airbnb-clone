@@ -67,11 +67,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   onClick={() => router.push("/reservations")}
                   label="예약 목록"
                 />
+                <MenuItem onClick={() => router.push('/properties')} label="계정" />
                 <MenuItem
                   onClick={rentModal.onOpen}
                   label="당신의 공간을 에어비앤비하세요"
                 />
-                <MenuItem onClick={() => {}} label="계정" />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="로그아웃" />
               </>
