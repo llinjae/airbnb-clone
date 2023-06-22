@@ -1,22 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-
-import Container from "../components/Container";
-import Heading from "../components/Heading";
-import ListingCard from "../components/listings/ListingCard";
+import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { SafeReservation, SafeUser } from "../types";
 
-interface TripsClientProps {
+import Heading from "../components/Heading";
+import Container from "../components/Container";
+import ListingCard from "../components/listings/ListingCard";
+
+interface ReservationsClientProps {
   reservations: SafeReservation[];
   currentUser?: SafeUser | null;
 }
 
-const TripsClient: React.FC<TripsClientProps> = ({
+const ReservationsClient: React.FC<ReservationsClientProps> = ({
   reservations,
   currentUser,
 }) => {
@@ -33,8 +33,8 @@ const TripsClient: React.FC<TripsClientProps> = ({
           toast.success("예약 취소됨");
           router.refresh();
         })
-        .catch((error) => {
-          toast.error(error?.response?.data?.error);
+        .catch(() => {
+          toast.error("무언가 잘못됨.");
         })
         .finally(() => {
           setDeletingId("");
@@ -45,7 +45,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
 
   return (
     <Container>
-      <Heading title="여행" subtitle="어디에서 지내고 어디로 갈 건가요" />
+      <Heading title="예약 목록" subtitle="예약 목록들" />
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
         {reservations.map((reservation) => (
           <ListingCard
@@ -55,7 +55,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
             actionId={reservation.id}
             onAction={onCancel}
             disabled={deletingId === reservation.id}
-            actionLabel="예약 취소"
+            actionLabel="고객 예약 취소"
             currentUser={currentUser}
           />
         ))}
@@ -64,4 +64,4 @@ const TripsClient: React.FC<TripsClientProps> = ({
   );
 };
 
-export default TripsClient;
+export default ReservationsClient;
