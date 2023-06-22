@@ -59,7 +59,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             {currentUser ? (
               <>
                 <MenuItem onClick={() => router.push("/trips")} label="여행" />
-                <MenuItem onClick={() => {}} label="위시리스트" />
+                <MenuItem
+                  onClick={() => router.push("/favorites")}
+                  label="위시리스트"
+                />
                 <MenuItem
                   onClick={() => router.push("/reservations")}
                   label="예약 목록"
