@@ -2,20 +2,63 @@
 
 "use client";
 
+import useCountries from "@/app/hooks/useCountries";
 import useSearchModal from "@/app/hooks/useSearchModal";
 import { css } from "@emotion/react";
+import { differenceInDays } from "date-fns";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { BiSearch } from "react-icons/bi";
 
 const Search = () => {
   const searchModal = useSearchModal();
+  const params = useSearchParams();
+  const { getByValue } = useCountries();
+
+  const locationValue = params?.get("locationValue");
+  const startDate = params?.get("startDate");
+  const endDate = params?.get("endDate");
+  const guestCount = params?.get("guestCount");
+
+  const locationLabel = useMemo(() => {
+    if (locationValue) {
+      return getByValue(locationValue as string)?.label;
+    }
+
+    return "어디든지";
+  }, [getByValue, locationValue]);
+
+  const durationLabel = useMemo(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate as string);
+      const end = new Date(endDate as string);
+      let diff = differenceInDays(end, start);
+
+      if (diff === 0) {
+        diff = 1;
+      }
+
+      return `${diff} 일`;
+    }
+
+    return "언제든지";
+  }, [startDate, endDate]);
+
+  const guestLabel = useMemo(() => {
+    if (guestCount) {
+      return `${guestCount} 명`;
+    }
+
+    return "게스트 추가";
+  }, [guestCount]);
 
   return (
     <div onClick={searchModal.onOpen} css={[SearchBox]}>
       <div css={[SearchContentBox]}>
-        <div css={[Anywhere]}>어디든지</div>
-        <div css={[AnyWeek]}>언제든지</div>
+        <div css={[Anywhere]}>{locationLabel}</div>
+        <div css={[AnyWeek]}>{durationLabel}</div>
         <div css={[GuestSearchBox]}>
-          <div css={[AddGuest]}>게스트 추가</div>
+          <div css={[AddGuest]}>{guestLabel}</div>
           <div css={[SearchIcon]}>
             <BiSearch size={18} />
           </div>
